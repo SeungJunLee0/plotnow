@@ -10,7 +10,7 @@ def print_histogram_names(input_filename, pattern):
     for key in input_file.GetListOfKeys():
         obj = key.ReadObj()
         if isinstance(obj, ROOT.TH1):
-            if pattern in obj.GetName():
+            if pattern in obj.GetName() and "minimax" in obj.GetName():
                 print(obj.GetName())
 
     input_file.Close()
