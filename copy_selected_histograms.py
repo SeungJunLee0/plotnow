@@ -21,6 +21,7 @@ def combine_histograms(input_filenames, output_filename, hist_names):
                 if "emu" in hist_name and "mini" in hist_name:
                     #print(hist_name)
                     if "ttbartwbb4l" in filename1: 
+                        print(filename1)
                         obj.Scale(1.2)
                     if hist_name not in combined_histograms:
                         combined_histograms[hist_name] = obj.Clone()
@@ -50,16 +51,19 @@ if __name__ == "__main__":
     input_dir = "/cms/ldap_home/seungjun/TMW/CMSSW_10_6_32/src/TopAnalysis/Configuration/analysis/diLeptonic/miniTreeHistograms_2018/forPlotIt_bb4l/"
     input_files_bb4l = ["ttbartwbb4linclusive","ttbartwbb4linclusive__WIDTH_100down","ttbartwbb4linclusive__WIDTH_180up","ttbartwbb4linclusive__WIDTH_160up","ttbartwbb4linclusive__WIDTH_80down"] ## 0~4
     #input_files_other = [input_files_bb4l[0]] ## 0~6
-    input_file_num = int(input("Enter a number: "))
-    input_files_other = ["ttbarbgFromLjets","ttbarbgFromHadronic","singletop","dy","ttbarX","diboson","wjets",input_files_bb4l[input_file_num]] ## 0~6
-	
-    #input_filenames = ["input1.root", "input2.root", "input3.root"]
-    output_filename = "combined_output.root"
-    if input_file_num == 1: output_filename = "combined_output_100.root"
-    if input_file_num == 2: output_filename = "combined_output_180.root"
-    if input_file_num == 3: output_filename = "combined_output_160.root"
-    if input_file_num == 4: output_filename = "combined_output_80.root"
-    
-    hist_names = ["em"]
+    #input_file_num = int(input("Enter a number: "))
+    input_file_num = 0
+    for i in range(5):	
+        input_file_num = i
+        print(i)
+        #input_filenames = ["input1.root", "input2.root", "input3.root"]
+        output_filename = "combined_output.root"
+        if input_file_num == 1: output_filename = "combined_output_100.root"
+        if input_file_num == 2: output_filename = "combined_output_180.root"
+        if input_file_num == 3: output_filename = "combined_output_160.root"
+        if input_file_num == 4: output_filename = "combined_output_80.root"
+        
+        hist_names = ["em"]
+        input_files_other = ["ttbarbgFromLjets","ttbarbgFromHadronic","singletop","dy","ttbarX","diboson","wjets",input_files_bb4l[input_file_num]] ## 0~6
 
-    combine_histograms(input_files_other, output_filename, hist_names)
+        combine_histograms(input_files_other, output_filename, hist_names)
