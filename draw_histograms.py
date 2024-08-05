@@ -1,9 +1,9 @@
 import ROOT
 
-def draw_histograms(file_names, hist_name):
+def draw_histograms(file_names, hist_name,num):
     # Create a canvas
     canvas = ROOT.TCanvas("canvas", "Histograms Comparison", 800, 600)
-
+    if num == 1 : canvas.SetLogy()
     # Define colors for each histogram
     colors = [ROOT.kRed, ROOT.kBlue, ROOT.kGreen, ROOT.kMagenta, ROOT.kCyan]
 
@@ -53,6 +53,7 @@ def draw_histograms(file_names, hist_name):
 
 # Usage example
 if __name__ == "__main__":
+    input_file_num = int(input("Enter a number( 1 is log scale): "))
     file_names = [
         "combined_output_100.root",
         "combined_output_160.root",
@@ -61,5 +62,5 @@ if __name__ == "__main__":
         "combined_output.root"
     ]
     hist_name = "emu_TwoBTag_GreaterOneJet_mlb_minimax_yield"  # Replace with the actual histogram name
-    draw_histograms(file_names, hist_name)
+    draw_histograms(file_names, hist_name,input_file_num)
 
