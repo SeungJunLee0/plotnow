@@ -17,6 +17,7 @@ def print_histogram_names(input_filename, pattern):
 
 if __name__ == "__main__":
     input_dir = "/cms/ldap_home/seungjun/TMW/CMSSW_10_6_32/src/TopAnalysis/Configuration/analysis/diLeptonic/miniTreeHistograms_2018/forPlotIt_bb4l/"
+    #input_filename = "dy.root"
     input_filename = "ttbartwbb4linclusive.root"
     input_filename1 = input_dir+input_filename
     pattern = "emu" 
