@@ -17,7 +17,7 @@ TH1F* hist_mc_1 = nullptr;
 
 void fcn(int &npar, double *gin, double &f, double *par, int iflag) {
     double nega = 0.0;
-    for (int i = 1; i <= hist_data->GetNbinsX(); ++i) {
+    for (int i = 1; i <= hist_data->GetNbinsX()+1; ++i) {
         double dataContent = hist_data->GetBinContent(i);
         double mcContent = hist_mc_1->GetBinContent(i);
         if (dataContent > 0) {
@@ -71,20 +71,28 @@ int main() {
     double val[5][1000] = {0.0};
     double mini[1000] = {0.0};
 
-    TFile *f = new TFile("root_file/poisson_viking.root", "read");
-    TFile *f1 = new TFile("root_file/template_file.root", "read");
+    //TFile *f = new TFile("root_file/poisson_viking.root", "read");
+    //TFile *f1 = new TFile("root_file/template_file.root", "read");
 
     for (int k = 0; k < 1000; k++) {
         for (int j = 0; j < 5; j++) {
+    		//TFile *f = new TFile("root_file/poisson_viking.root", "read");
+			TString file_name = "combined_output_"+widths[j]+".root";
+    		//TFile *f1 = new TFile(file_name, "read");
+    		TFile *f1 = new TFile("root_file/template_file.root", "read");
             count1 = k;
             TString data_name = "hblmass0_" + widths[j];
+            //TString data_name = "emu_TwoBTag_TwoJet_mlb_minimax";
             hist_data = (TH1F*)f1->Get(data_name);
 
             TString hist_name = "hist_" + TString::Itoa(count1, 10);
+			cout<< hist_name <<endl;
             hist_mc_1 = (TH1F*)f->Get(hist_name);
 
             val[j][k] = cal(widths[j], k);
-            mini[k] = 0.0;
+            if (val[j][k] <= mini[k]) mini[k] = val[j][k];
+    		f->Close();
+    		f1->Close();
         }
     }
 
@@ -110,8 +118,8 @@ int main() {
         delete gr;  // Clean up memory
     }
 
-    f->Close();
-    f1->Close();
+//    f->Close();
+//    f1->Close();
     file->Close();
 
     delete f;
