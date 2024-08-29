@@ -53,7 +53,10 @@ int make_hist(TString width) {
     }
 
     // Scale the histogram to match the entries of the reference histogram
+	cout<< hist_080->GetEntries()<<endl;
     hist_080->Scale(hist_130->GetEntries() / hist_080->GetEntries());
+	cout<< hist_130->GetEntries() / hist_080->GetEntries() <<endl;
+	cout<< hist_080->GetEntries()<<endl;
 
     TFile *file = TFile::Open("root_file/template_file.root", "UPDATE");
     if (!file || file->IsZombie()) {
@@ -116,10 +119,15 @@ int main() {
 
     for (int i = 0; i < 1000; i++) {
         int ran1 = rd.Poisson(bin);
+		TH1F *hist_random = (TH1F*)basic->Clone();
+		hist_random -> Reset();
         TString hist_name = "hist_" + TString::Itoa(i, 10);
         TString hist_title = "Template Method " + TString::Itoa(i, 10) + " : 1.32 GeV";
+		hist_random -> SetName(hist_name);
+		hist_random -> SetTitle(hist_title);
 
-        TH1F *hist_random = new TH1F(hist_name, hist_title, bins, binEdges);
+        //TH1F *hist_random = new TH1F(hist_name, hist_title, bins, binEdges);
+
         for (int k = 0; k < ran1; k++) {
             double mlb = basic->GetRandom();
             hist_random->Fill(mlb);
