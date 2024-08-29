@@ -53,8 +53,18 @@ int make_hist(TString width) {
         delete hist_080;
         return 1;
     }
-
-    hist_080->Scale(hist_130->GetEntries() / hist_080->GetEntries());
+    TH1F *newHist = new TH1F("newHist", "Rebinned Histogram", 15, 0, 500);
+    newHist->SetName(hist_name2);
+	for (int i = 1; i <= hist_080->GetEntries(); i++) {
+	//for (int i = 1; i <= hist_080->GetNbinsX(); i++) {
+	    double binContent = hist_080->GetBinContent(i);
+	    double binCenter =  hist_080->GetBinCenter(i);
+	    int newBin = newHist->FindBin(binCenter);
+	    newHist->AddBinContent(newBin, binContent);
+	}
+	newHist->Draw();
+    newHist->Scale(hist_130->GetEntries() / hist_080->GetEntries());
+    //hist_080->Scale(hist_130->GetEntries() / hist_080->GetEntries());
 
     TFile *file = TFile::Open("root_file/template_file.root", "UPDATE");
     if (!file || file->IsZombie()) {
@@ -64,7 +74,8 @@ int make_hist(TString width) {
         return 1;
     }
 
-    hist_080->Write();
+    //hist_080->Write();
+    newHist->Write();
     file->Close();
 
     f130->Close();
