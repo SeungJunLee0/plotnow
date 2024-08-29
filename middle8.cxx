@@ -53,18 +53,17 @@ int make_hist(TString width) {
         delete hist_080;
         return 1;
     }
-    TH1F *newHist = new TH1F("newHist", "Rebinned Histogram", 15, 0, 500);
-    newHist->SetName(hist_name2);
-	for (int i = 1; i <= hist_080->GetEntries(); i++) {
+    //TH1F *newHist = new TH1F("newHist", "Rebinned Histogram", 15, 0, 500);
+    //newHist->SetName(hist_name2);
 	//for (int i = 1; i <= hist_080->GetNbinsX(); i++) {
-	    double binContent = hist_080->GetBinContent(i);
-	    double binCenter =  hist_080->GetBinCenter(i);
-	    int newBin = newHist->FindBin(binCenter);
-	    newHist->AddBinContent(newBin, binContent);
-	}
-	newHist->Draw();
-    newHist->Scale(hist_130->GetEntries() / hist_080->GetEntries());
-    //hist_080->Scale(hist_130->GetEntries() / hist_080->GetEntries());
+	//    double binContent = hist_080->GetBinContent(i);
+	//    double binCenter =  hist_080->GetBinCenter(i);
+	//    int newBin = newHist->FindBin(binCenter);
+	//    newHist->AddBinContent(newBin, binContent);
+	//}
+	//newHist->Draw();
+    //newHist->Scale(hist_130->GetEntries() / hist_080->GetEntries());
+    hist_080->Scale(hist_130->GetEntries() / hist_080->GetEntries());
 
     TFile *file = TFile::Open("root_file/template_file.root", "UPDATE");
     if (!file || file->IsZombie()) {
@@ -74,8 +73,8 @@ int make_hist(TString width) {
         return 1;
     }
 
-    //hist_080->Write();
-    newHist->Write();
+    hist_080->Write();
+    //newHist->Write();
     file->Close();
 
     f130->Close();
@@ -117,8 +116,10 @@ int main() {
 
     double count = basic->GetEntries();
     double bin = count;
-    int bins = 15;
+    //int bins = 15;
 
+    int bins = basic->GetNbinsX();
+    const double* binEdges = basic->GetXaxis()->GetXbins()->GetArray();
     TRandom3 rd;
     rd.SetSeed(0);
 
@@ -127,7 +128,8 @@ int main() {
         TString hist_name = "hist_" + TString::Itoa(i, 10);
         TString hist_title = "Template Method " + TString::Itoa(i, 10) + " : 1.32  GeV";
 
-        TH1F *hist_random = new TH1F(hist_name, hist_title, bins, 0, 500);
+        //TH1F *hist_random = new TH1F(hist_name, hist_title, bins, 0, 500);
+		TH1F *hist_random = new TH1F(hist_name, hist_title, bins, binEdges);
         for (int k = 0; k < ran1; k++) {
             double mlb = basic->GetRandom();
             hist_random->Fill(mlb);
